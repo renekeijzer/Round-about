@@ -1,5 +1,7 @@
 import org.lwjgl.util.vector.Vector2f;
 
+import util.XDirection;
+import util.YDirection;
 import Shapes.Rectangle;
 
 
@@ -61,4 +63,27 @@ public abstract class MovableGameComponent extends GameComponent {
 		return new Rectangle(position, getHeight(), getWidth());
 	}
 	
+	public Rectangle getNextRectangle(){
+		return new Rectangle(getNextPosition(), getHeight(), getWidth());
+	}
+	
+	public XDirection getXDirection(){
+		if(velocity.x == 0.0f){
+			return XDirection.None;
+		}else if(velocity.x < 0){
+			return XDirection.Left;
+		}else{
+			return XDirection.Right;
+		}
+	}
+	
+	public YDirection getYDirection(){
+		if(velocity.x == 0.0f){
+			return YDirection.None;
+		}else if(velocity.x < 0){
+			return YDirection.Up;
+		}else{
+			return YDirection.Down;
+		}
+	}
 }

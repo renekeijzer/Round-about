@@ -73,7 +73,7 @@ public class physicsController extends GameComponent
 
 	}
 	
-	//NOT READY
+//	//NOT READY
 //	private boolean isColliding(MovableGameComponent subject){
 //		Vector2f curPos = subject.getBlockRasterPosition();
 //		Vector2f nextPos = subject.getNextBlockRasterPosition();
