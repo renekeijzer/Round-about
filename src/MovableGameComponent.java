@@ -31,6 +31,9 @@ public abstract class MovableGameComponent extends GameComponent {
 	@Override
 	public abstract void Draw();
 	
+	public abstract int getHeight();
+	public abstract int getWidth();
+	
 	/*
 	 * Returns top-left position
 	 */
@@ -52,6 +55,10 @@ public abstract class MovableGameComponent extends GameComponent {
 	 */
 	public Vector2f getVelocity(){
 		return velocity;
+	}
+	
+	public Rectangle getRectangle(){
+		return new Rectangle(position, getHeight(), getWidth());
 	}
 	
 }

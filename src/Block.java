@@ -11,6 +11,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
+import util.Constants;
 import Resources.ResourceLoader;
 import Shapes.Rectangle;
 
@@ -123,6 +124,16 @@ public class Block extends MovableGameComponent {
 		glVertex2f((float) xb, (float) y);
 		glEnd();
 		}
+	}
+
+	@Override
+	public int getHeight() {
+		return Constants.BLOCKHEIGHT;
+	}
+
+	@Override
+	public int getWidth() {
+		return Constants.BLOCKWIDTH;
 	}
 	
 

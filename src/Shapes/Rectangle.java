@@ -4,6 +4,7 @@ import org.lwjgl.util.vector.Vector2f;
 
 import util.Courner;
 import util.PointMath;
+import util.Vector2i;
 
 public class Rectangle {
 	protected Vector2f Position;
@@ -48,12 +49,15 @@ public class Rectangle {
 		return PointMath.getPosition(Position, Width, Height, courner);
 	}
 	
-	public Vector2f getCenterPosition(){
-		return PointMath.getCenterPosition(Position, Width, Height);
+	public Vector2f getBlockRasterPosition(Courner courner){
+		return PointMath.ConvertToBlockRaster(getPosition(courner));
 	}
 	
-	public int[][] getAllInnerBlockPosition(){
-		int[][] positions = new int[PointMath.ConvertToBlockRaster(getPosition(Courner.TopRight)).x - PointMath.ConvertToBlockRaster(getPosition(Courner.TopLeft)).x][];
-		
+	public Vector2i getBlockRasterTopLeftPosition(Courner courner){
+		return new Vector2i(getBlockRasterPosition(courner));
+	}
+	
+	public Vector2f getCenterPosition(){
+		return PointMath.getCenterPosition(Position, Width, Height);
 	}
 }

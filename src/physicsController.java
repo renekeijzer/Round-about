@@ -2,7 +2,10 @@ import java.util.ArrayList;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import Shapes.Rectangle;
 import util.Constants;
+import util.Courner;
+import util.PointMath;
 import util.Vector2i;
 
 public class physicsController extends GameComponent
@@ -270,6 +273,37 @@ public class physicsController extends GameComponent
 			}
 
 		}
+	}
+	
+	/**
+	 * Returns all blocks with are within and on the border of the reactangle
+	 */
+	public ArrayList<Block> getBlocks(Rectangle r){
+		ArrayList<Block> list = new ArrayList<Block>();
+		Vector2i rBlockTopLeft = r.getBlockRasterTopLeftPosition(Courner.TopLeft);
+		Vector2i rBlockBottomRight = r.getBlockRasterTopLeftPosition(Courner.BottomRight);
+		for (int x = rBlockTopLeft.x; x <= rBlockBottomRight.x; x++){
+			for(int y = rBlockTopLeft.y; y <= rBlockBottomRight.y; y++){
+				GameComponent temp = Assoc.get(y).get(x);
+				if(temp instanceof Block){
+					list.add((Block) temp);
+				}
+			}
+		}
+		return list;
+	}
+	/**
+	 * Returns all NonAir blocks with are within and over the border of the reactangle
+	 */
+	public ArrayList<Block> getNonAirBlocks(Rectangle r){
+		ArrayList<Block> list = getBlocks(r);
+		ArrayList<Block> copy = new ArrayList<Block>();
+		for(Block b: list){
+			if(b.getType() != Type.Air){
+				copy.add(b);
+			}
+		}
+		return copy;
 	}
 
 }

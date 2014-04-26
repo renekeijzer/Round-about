@@ -11,6 +11,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Color;
 
+import util.Constants;
 import Shapes.Rectangle;
 
 public class Player extends MovableGameComponent
@@ -140,6 +141,16 @@ public class Player extends MovableGameComponent
 		glVertex2f(position.x + rect.getWidth(), position.y + rect.getHeight());
 		glVertex2f(position.x + rect.getWidth(), position.y);
 		glEnd();
+	}
+
+	@Override
+	public int getHeight() {
+		return Constants.PLAYERHEIGHT;
+	}
+
+	@Override
+	public int getWidth() {
+		return Constants.PLAYERWIDTH;
 	}
 
 }
