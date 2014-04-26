@@ -1,5 +1,9 @@
 import java.util.ArrayList;
 
+import org.lwjgl.util.vector.Vector2f;
+
+import util.Vector2i;
+
 public class physicsController extends GameComponent
 {
 
@@ -63,6 +67,64 @@ public class physicsController extends GameComponent
 			}
 		}
 
+	}
+	
+	private boolean isColliding(MovableGameComponent subject){
+		Vector2f curPos = subject.getBlockRasterPosition();
+		Vector2f nextPos = subject.getNextBlockRasterPosition();
+		Vector2f velocity = subject.getBlockRasterVelocity();
+		
+		//we are going to check all blocks in with and between curPos and nextPos
+		Vector2i curTopLeftBlockPos = new Vector2i(curPos);
+		Vector2i curBottomRightBlockPos = new Vector2i(Constants.ConvertToBlockRaster(new Vector2f(subject.getPosition().x + Constants.PLAYERWIDTH, subject.getPosition().y + Constants.PLAYERHEIGHT)));
+		Vector2i nextTopLeftBlockPos = new Vector2i(nextPos);
+		Vector2i nextBottomRightBlockPos = new Vector2i(Constants.ConvertToBlockRaster(new Vector2f(subject.getNextPosition().x + Constants.PLAYERWIDTH, subject.getNextPosition().y + Constants.PLAYERHEIGHT)));
+		
+		int lowesty;
+		int lowestx;
+		
+		int heighsty;
+		int heighstx;
+		
+		//will be behind set to the farrest block
+		int closestBlockx;
+		int closestBlocky;
+		
+		if(velocity.x < 0){		//naar links
+			heighstx = curBottomRightBlockPos.x;
+			lowestx = nextTopLeftBlockPos.x;
+			closestBlockx = nextTopLeftBlockPos.x -1;
+		}else{					//naar rechts
+			heighstx = nextBottomRightBlockPos.x;
+			lowestx = curTopLeftBlockPos.x;
+			closestBlockx = nextBottomRightBlockPos.x + 1;
+		}
+		
+		if(velocity.y < 0){		//naar omhoog
+			heighsty = nextTopLeftBlockPos.y;
+			lowesty = curBottomRightBlockPos.y;
+			closestBlocky = nextTopLeftBlockPos.y + 1;
+		}else{					//naar omlaag
+			heighsty = curTopLeftBlockPos.y;
+			lowesty = nextBottomRightBlockPos.y;
+			closestBlocky = nextBottomRightBlockPos.y - 1;
+		}
+		
+		for (int mx = lowestx; mx <= heighstx; mx++){
+			for(int my = lowesty; my <= heighsty; my++){
+				Block tmpBlock = (Block) Assoc.get(my).get(mx);
+				if (!tmpBlock.getType().isfluid() && tmpBlock.getType().getMass() > 0){
+					//collision with block
+					Vector2i blockLocation = new Vector2i(tmpBlock.getBlockRasterPosition());
+					if(Constants.distanceInt(blockLocation.x, curTopLeftBlockPos.x) < Constants.distanceInt(closestBlockx, curTopLeftBlockPos.x)){
+						closestBlockx = blockLocation.x;
+					}
+					if(Constants.distanceInt(blockLocation.y, curTopLeftBlockPos.y) < Constants.distanceInt(closestBlocky, curTopLeftBlockPos.y)){
+						closestBlockx = blockLocation.y;
+					}
+				}
+			}
+		}
 	}
 
 	private boolean isColliding(MovableGameComponent subject)

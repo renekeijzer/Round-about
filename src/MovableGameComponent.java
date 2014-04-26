@@ -30,9 +30,51 @@ public abstract class MovableGameComponent extends GameComponent {
 	
 	@Override
 	public abstract void Draw();
+	
+	/*
+	 * Returns top-left position
+	 */
 	public Vector2f getPosition()
 	{
 		return this.position;
+	}
+	
+	/**
+	 * Returns the new top-left position of the object
+	 */
+	public Vector2f getNextPosition(){
+		return new Vector2f(this.position.x + this.velocity.x, this.position.y + this.position.x);
+	}
+	
+	/**
+	 * Returns the velocity
+	 * @return
+	 */
+	public Vector2f getVelocity(){
+		return velocity;
+	}
+	
+	/*
+	 * Returns top-left position
+	 */
+	public Vector2f getBlockRasterPosition()
+	{
+		return Constants.ConvertToBlockRaster(this.position);
+	}
+	
+	/**
+	 * Returns the new top-left position of the object
+	 */
+	public Vector2f getNextBlockRasterPosition(){
+		return Constants.ConvertToBlockRaster(getNextPosition());
+	}
+	
+	/**
+	 * Returns the velocity
+	 * @return
+	 */
+	public Vector2f getBlockRasterVelocity(){
+		return Constants.ConvertToBlockRaster(this.velocity);
 	}
 	
 }
