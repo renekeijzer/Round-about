@@ -54,27 +54,4 @@ public abstract class MovableGameComponent extends GameComponent {
 		return velocity;
 	}
 	
-	/*
-	 * Returns top-left position
-	 */
-	public Vector2f getBlockRasterPosition()
-	{
-		return Constants.ConvertToBlockRaster(this.position);
-	}
-	
-	/**
-	 * Returns the new top-left position of the object
-	 */
-	public Vector2f getNextBlockRasterPosition(){
-		return Constants.ConvertToBlockRaster(getNextPosition());
-	}
-	
-	/**
-	 * Returns the velocity
-	 * @return
-	 */
-	public Vector2f getBlockRasterVelocity(){
-		return Constants.ConvertToBlockRaster(this.velocity);
-	}
-	
 }
