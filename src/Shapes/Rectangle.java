@@ -2,6 +2,7 @@ package Shapes;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import util.Courner;
 import util.PointMath;
 
 public class Rectangle {
@@ -43,5 +44,16 @@ public class Rectangle {
 		this.Height = (int) PointMath.distanceFloat(Pos1.y, Pos2.y);
 	}
 	
+	public Vector2f getPosition(Courner courner){
+		return PointMath.getPosition(Position, Width, Height, courner);
+	}
 	
+	public Vector2f getCenterPosition(){
+		return PointMath.getCenterPosition(Position, Width, Height);
+	}
+	
+	public int[][] getAllInnerBlockPosition(){
+		int[][] positions = new int[PointMath.ConvertToBlockRaster(getPosition(Courner.TopRight)).x - PointMath.ConvertToBlockRaster(getPosition(Courner.TopLeft)).x][];
+		
+	}
 }
