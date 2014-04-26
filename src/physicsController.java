@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import util.Constants;
 import util.Vector2i;
 
 public class physicsController extends GameComponent

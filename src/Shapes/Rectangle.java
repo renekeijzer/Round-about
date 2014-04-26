@@ -2,6 +2,8 @@ package Shapes;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import util.PointMath;
+
 public class Rectangle {
 	protected Vector2f Position;
 	protected int Width, Height;
@@ -30,7 +32,16 @@ public class Rectangle {
 		this.Width = width;
 	}
 	
-	
+	public Rectangle(Vector2f Pos1, Vector2f Pos2){
+		float posx;
+		float posy;
+		if(Pos1.x < Pos2.x){ posx = Pos1.x; }else{ posx = Pos2.x;}
+		if(Pos1.y < Pos2.y){ posy = Pos1.y; }else{ posy = Pos2.y;}
+		this.Position = new Vector2f(posx, posy);
+		//TODO realy convert to int?
+		this.Width = (int) PointMath.distanceFloat(Pos1.x, Pos2.x);
+		this.Height = (int) PointMath.distanceFloat(Pos1.y, Pos2.y);
+	}
 	
 	
 }
