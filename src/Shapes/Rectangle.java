@@ -6,6 +6,9 @@ import util.Courner;
 import util.PointMath;
 import util.Vector2i;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class Rectangle {
 	protected Vector2f Position;
 	protected int Width, Height;
@@ -45,6 +48,26 @@ public class Rectangle {
 		this.Height = (int) PointMath.distanceFloat(Pos1.y, Pos2.y);
 	}
 	
+	/*
+	 * Makes the smalst possible Rectangle with both rectangles within
+	 */
+	public Rectangle(Rectangle r1, Rectangle r2){
+		Vector2f points[] = {r1.getPosition(Courner.TopLeft), r1.getPosition(Courner.BottomRight), r2.getPosition(Courner.TopLeft), r2.getPosition(Courner.BottomRight)};
+		ArrayList<Float> xlist = new ArrayList<Float>();
+		ArrayList<Float> ylist = new ArrayList<Float>();
+		for(Vector2f point : points){
+			xlist.add(point.x);
+			ylist.add(point.y);
+		}
+		Collections.sort(xlist); //lowest value above
+		Collections.sort(ylist); //lowest value above
+		//I am only intreseted in the lowest and the highst value
+		this.Position = new Vector2f(xlist.get(0), ylist.get(0));
+		//TODO realy convert to int?
+		this.Width = (int) (xlist.get(3) - xlist.get(0));
+		this.Height = (int) (ylist.get(3) - ylist.get(0));
+	}
+	
 	public Vector2f getPosition(Courner courner){
 		return PointMath.getPosition(Position, Width, Height, courner);
 	}
@@ -59,5 +82,16 @@ public class Rectangle {
 	
 	public Vector2f getCenterPosition(){
 		return PointMath.getCenterPosition(Position, Width, Height);
+	}
+	
+	public Courner checkCourner(Rectangle r){
+		Courner courners[] = {Courner.TopLeft, Courner.TopRight, Courner.BottomRight, Courner.BottomLeft};
+		for (Courner c : courners){
+			//convert to int because of may fail when check equals on floats <- on small Rectangles not so accurate
+			Vector2i pos1 = new Vector2i(this.getPosition(c));
+			Vector2i pos2 = new Vector2i(this.getPosition(c));
+			if(pos1.equals(pos2)) return c;
+		}
+		return null;
 	}
 }

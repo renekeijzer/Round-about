@@ -1,5 +1,7 @@
 import org.lwjgl.util.vector.Vector2f;
 
+import util.Courner;
+import util.PointMath;
 import util.XDirection;
 import util.YDirection;
 import Shapes.Rectangle;
@@ -44,6 +46,10 @@ public abstract class MovableGameComponent extends GameComponent {
 		return this.position;
 	}
 	
+	public Vector2f getPosition(Courner courner){
+		return PointMath.getPosition(position, getWidth(), getHeight(), courner);
+	}
+	
 	/**
 	 * Returns the new top-left position of the object
 	 */
@@ -51,12 +57,19 @@ public abstract class MovableGameComponent extends GameComponent {
 		return new Vector2f(this.position.x + this.velocity.x, this.position.y + this.position.x);
 	}
 	
+	public Vector2f getNextPosition(Courner courner){
+		return PointMath.getPosition(getNextPosition(), getWidth(), getHeight(), courner);
+	}
+	
 	/**
 	 * Returns the velocity
-	 * @return
 	 */
 	public Vector2f getVelocity(){
 		return velocity;
+	}
+	
+	public void setVelocity(Vector2f velocity){
+		this.velocity = velocity;
 	}
 	
 	public Rectangle getRectangle(){
@@ -85,5 +98,9 @@ public abstract class MovableGameComponent extends GameComponent {
 		}else{
 			return YDirection.Down;
 		}
+	}
+	
+	public Rectangle getMoveRectangle(){
+		return new Rectangle(getRectangle(), getNextRectangle());
 	}
 }

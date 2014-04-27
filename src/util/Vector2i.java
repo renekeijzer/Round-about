@@ -18,4 +18,14 @@ public class Vector2i {
 		this.x = (int) Math.floor(vector.x);
 		this.y = (int) Math.floor(vector.y);;
 	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if(obj instanceof Vector2i){
+			Vector2i objV2i = (Vector2i)obj;
+			return ((objV2i.x == this.x) && (objV2i.y == this.y));
+		}else{
+			return super.equals(obj);
+		}
+	}
 }
