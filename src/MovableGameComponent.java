@@ -54,7 +54,7 @@ public abstract class MovableGameComponent extends GameComponent {
 	 * Returns the new top-left position of the object
 	 */
 	public Vector2f getNextPosition(){
-		return new Vector2f(this.position.x + this.velocity.x, this.position.y + this.position.x);
+		return new Vector2f(this.position.x + this.velocity.x, this.position.y + this.velocity.y);
 	}
 	
 	public Vector2f getNextPosition(Courner courner){
@@ -73,11 +73,11 @@ public abstract class MovableGameComponent extends GameComponent {
 	}
 	
 	public Rectangle getRectangle(){
-		return new Rectangle(position, getHeight(), getWidth());
+		return new Rectangle(position, getWidth(), getHeight());
 	}
 	
 	public Rectangle getNextRectangle(){
-		return new Rectangle(getNextPosition(), getHeight(), getWidth());
+		return new Rectangle(getNextPosition(), getWidth(), getHeight());
 	}
 	
 	public XDirection getXDirection(){

@@ -28,4 +28,8 @@ public class Vector2i {
 			return super.equals(obj);
 		}
 	}
+	
+	public String toString(){
+		return "x: " + x + " y: " + y;
+	}
 }

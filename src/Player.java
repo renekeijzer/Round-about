@@ -50,6 +50,12 @@ public class Player extends MovableGameComponent
 	@Override
 	public void Update()
 	{
+		this.position.x += velocity.x;
+		this.position.y += velocity.y;
+
+		rect.setX((int) position.x);
+		rect.setY((int) position.y);
+		
 		switch (Keys.getNext())
 		{
 		case Keyboard.KEY_A:
@@ -122,12 +128,6 @@ public class Player extends MovableGameComponent
 			velocity.y = 0;
 			this.jumping = false;
 		}
-
-		this.position.x += velocity.x;
-		this.position.y += velocity.y;
-
-		rect.setX((int) position.x);
-		rect.setY((int) position.y);
 	}
 
 	@Override

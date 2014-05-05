@@ -75,48 +75,61 @@ public class physicsController extends GameComponent
 
 	}
 	
-//	//NOT READY
+	//NOT READY
 	private boolean isColliding(MovableGameComponent subject){
-		Rectangle moveRectangle = subject.getMoveRectangle();
-		ArrayList<Block> blocklist = getNonAirBlocks(moveRectangle);
-		if(!blocklist.isEmpty()){	//collision while moving!
-			Courner myPosition;
-			if(subject.getXDirection() == XDirection.Left){
-				if(subject.getYDirection() == YDirection.Up){
-					myPosition = Courner.BottomRight;
+		if (subject instanceof Player){
+			System.out.println("Player Pos: x:" + ((Player)subject).getPosition().x + " y: " + ((Player)subject).getPosition().y);
+			System.out.println("Player NextPos: x:" + ((Player)subject).getNextPosition().x + " y: " + ((Player)subject).getNextPosition().y);
+			Rectangle moveRectangle = subject.getMoveRectangle();
+			ArrayList<Block> blocklist = getNonAirBlocks(moveRectangle);
+			System.out.println(blocklist.size());
+			if(!blocklist.isEmpty()){	//collision while moving!
+				Courner otherPosition;
+				Courner myPosition;
+				if(subject.getXDirection() == XDirection.Left){
+					if(subject.getYDirection() == YDirection.Up){
+						otherPosition = Courner.BottomRight;
+						myPosition = Courner.TopLeft;
+					}else{
+						otherPosition = Courner.TopRight;
+						myPosition = Courner.BottomLeft;
+					}
 				}else{
-					myPosition = Courner.TopRight;
+					if(subject.getYDirection() == YDirection.Up){
+						otherPosition = Courner.BottomLeft;
+						myPosition = Courner.TopRight;
+					}else{
+						otherPosition = Courner.TopLeft;
+						myPosition = Courner.BottomRight;
+					}
 				}
+				float nearestx = subject.getVelocity().x;
+				float nearesty = subject.getVelocity().y;
+				if(subject.getVelocity().x < 0) nearestx *= -1;
+				if(subject.getVelocity().y < 0) nearesty *= -1;
+				float curx = subject.getPosition(myPosition).x;
+				float cury = subject.getPosition(myPosition).y;
+				for(Block b : blocklist){
+					float distx = PointMath.distanceFloat(curx, b.getPosition(otherPosition).x);
+					float disty = PointMath.distanceFloat(cury, b.getPosition(otherPosition).y);
+					if(distx < nearestx) nearestx = distx;
+					if(disty < nearesty) nearesty = disty;
+				}
+				
+				if(subject.getVelocity().x < 0) nearestx *= -1;
+				if(subject.getVelocity().y < 0) nearesty *= -1;
+				
+				subject.setVelocity(new Vector2f(nearestx, nearesty));
+				System.out.println("Players Limited Pos: x:" + ((Player)subject).getNextPosition().x + " y: " + ((Player)subject).getNextPosition().y);
+				
+				//TODO ?Boolean? i've done al the work
+				return true;
 			}else{
-				if(subject.getYDirection() == YDirection.Up){
-					myPosition = Courner.BottomLeft;
-				}else{
-					myPosition = Courner.TopLeft;
-				}
+				//TODO ?Boolean? i've done al the work
+				return false;
 			}
-			Vector2f nearestPos = blocklist.get(0).getPosition(myPosition);
-			float nearestx = blocklist.get(0).getPosition(myPosition).x;
-			float nearesty = blocklist.get(0).getPosition(myPosition).y;
-			float curx = subject.getPosition().x;
-			float cury = subject.getPosition().y;
-			for(Block b : blocklist){
-				float distx = PointMath.distanceFloat(curx, b.getPosition(myPosition).x);
-				float disty = PointMath.distanceFloat(cury, b.getPosition(myPosition).y);
-				if(distx < nearestx) nearestx = distx;
-				if(disty < nearesty) nearesty = disty;
-			}
-			
-			if(subject.getVelocity().x < 0) nearestx *= -1;
-			if(subject.getVelocity().y < 0) nearesty *= -1;
-			
-			subject.setVelocity(new Vector2f(nearestx, nearesty));
-			
-			//TODO ?Boolean? i've done al the work
-			return true;
-		}else{
-			//TODO ?Boolean? i've done al the work
-			return false;
 		}
+		return false;
 	}
 
 //	private boolean isColliding(MovableGameComponent subject)
@@ -133,6 +146,7 @@ public class physicsController extends GameComponent
 //				if (x >= 0)
 //				{
 //					Block tmpBlock = (Block) Assoc.get(y).get(x);
+//					System.out.println(tmpBlock.getType().toString() + " x: " + tmpBlock.getPosition().x + " y: " + tmpBlock.getPosition().y);
 //					if (!tmpBlock.getType().isfluid()
 //							&& tmpBlock.getType().getMass() > 0)
 //					{
@@ -158,6 +172,7 @@ public class physicsController extends GameComponent
 //				if (x <= Constants.MAPWIDTH - 1)
 //				{
 //					Block tmpBlock = (Block) Assoc.get(y).get(x);
+//					System.out.println(tmpBlock.getType().toString() + " x: " + tmpBlock.getPosition().x + " y: " + tmpBlock.getPosition().y);
 //					if (!tmpBlock.getType().isfluid()
 //							&& tmpBlock.getType().getMass() > 0)
 //					{
@@ -269,13 +284,15 @@ public class physicsController extends GameComponent
 		ArrayList<Block> list = new ArrayList<Block>();
 		Vector2i rBlockTopLeft = r.getBlockRasterTopLeftPosition(Courner.TopLeft);
 		Vector2i rBlockBottomRight = r.getBlockRasterTopLeftPosition(Courner.BottomRight);
-		for (int x = rBlockTopLeft.x; x <= rBlockBottomRight.x; x++){
-			if(x >= Assoc.size()) break;
-			for(int y = rBlockTopLeft.y; y <= rBlockBottomRight.y; y++){
-				if(y >= Assoc.get(x).size()) break;
+		System.out.println("Looking between: "+ rBlockTopLeft + " and " + rBlockBottomRight + "for blocks");
+		for (int y = rBlockTopLeft.y; y <= rBlockBottomRight.y; y++){
+			if(y >= Assoc.size()) break;
+			for(int x = rBlockTopLeft.x; x <= rBlockBottomRight.x; x++){
+				if(x >= Assoc.get(y).size()) break;
 				GameComponent temp = Assoc.get(y).get(x);
 				if(temp instanceof Block){
 					list.add((Block) temp);
+					System.out.println(((Block)temp).getType().toString() + " x: " + x + " y: " + y);
 				}
 			}
 		}
