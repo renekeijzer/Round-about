@@ -110,22 +110,23 @@ public class physicsController extends GameComponent
 				float curx = subject.getPosition(myPosition).x;
 				float cury = subject.getPosition(myPosition).y;
 				for(Block b : blocklist){
+					float dif = b.getPosition(Courner.TopLeft).y - subject.getNextPosition(Courner.BottomRight).y;
+					if ((dif < 0.0f && dif > -0.1f) || (dif > 0.0f && dif < 0.1f) || dif == 0.0f) continue;
 					float distx = PointMath.distanceFloat(curx, b.getPosition(otherPosition).x);
 					float disty = PointMath.distanceFloat(cury, b.getPosition(otherPosition).y);
 					if(distx < nearestx) nearestx = distx;
 					if(disty < nearesty) nearesty = disty;
 				}
-				
 				if(subject.getVelocity().x < 0) nearestx *= -1;
 				if(subject.getVelocity().y < 0) nearesty *= -1;
 				
 				subject.setVelocity(new Vector2f(nearestx, nearesty));
 				System.out.println("Players Limited Pos: x:" + ((Player)subject).getNextPosition().x + " y: " + ((Player)subject).getNextPosition().y);
 				
-				//TODO ?Boolean? i've done al the work
+				//TODO ?Boolean? i've done all the work
 				return true;
 			}else{
-				//TODO ?Boolean? i've done al the work
+				//TODO ?Boolean? i've done all the work
 				return false;
 			}
 		}
