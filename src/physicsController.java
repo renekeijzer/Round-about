@@ -56,23 +56,21 @@ public class physicsController extends GameComponent
 				if (component.getClass().getSuperclass().getName() == "MovableGameComponent")
 				{
 					MovableGameComponent Subject = (MovableGameComponent) component;
-
+					updateAssoc(Subject);
 					int x = (int) Math.floor(Subject.getPosition().x / 32);
 					int y = (int) Math.floor(Subject.getPosition().y / 32);
 					if (isFalling(Subject))
 					{
 						Subject.falling = true;
+						
 					} else
-					{
+					{  
 						Subject.falling = false;
-						if(Subject instanceof Block)
-						{
-							
-						}
+						
 					}
 
 					isColliding(Subject);
-					updateAssoc(Subject);
+					
 
 					Subject.setOldPosition(Subject.getPosition());
 				}
@@ -85,24 +83,28 @@ public class physicsController extends GameComponent
 	{
 		if(subject instanceof Block)
 		{
-//			Vector2f oldPosition = subject.getOldPosition();
-//			int oldX = (int) (oldPosition.x / Constants.BLOCKHEIGHT);
-//			int oldY = (int) (oldPosition.y / Constants.BLOCKHEIGHT);
-//			
-//			Vector2f newPosition = subject.getPosition();
-//			int newX = (int) (oldPosition.x / Constants.BLOCKHEIGHT);
-//			int newY = (int) (oldPosition.y / Constants.BLOCKWIDTH);
-//			
-		//	if(newY != oldY){
 			if(subject.falling)
 				GravitationalSwap(subject);
-		//	}
 			
+			if(!subject.falling){
+				fixTexture(subject);
+			}
 		}
 	} 
 	
 	
 	
+	/* Quick and dirty texturefixing*/
+	private void fixTexture(MovableGameComponent subject) {
+		int x = (int) (subject.position.x / Constants.BLOCKWIDTH);
+		int y = (int) (subject.position.y/ Constants.BLOCKHEIGHT);
+		
+		int xfinal = x* Constants.BLOCKWIDTH;
+		int yfinal = y * Constants.BLOCKHEIGHT;
+		
+		subject.position = new Vector2f(xfinal,yfinal);
+		
+	}
 
 	private void GravitationalSwap(MovableGameComponent subject) {
 		int x = (int) (subject.getPosition().x/Constants.BLOCKWIDTH);
@@ -292,29 +294,6 @@ public class physicsController extends GameComponent
 		}
 		return false;
 
-	}
-
-	private void updateAssoc()
-	{
-		for (GameComponent gc : Components.GetInstance())
-		{
-			if (gc instanceof Block)
-			{
-				Block block = (Block) gc;
-
-				int x = (int) Math.floor(block.getPosition().x
-						/ Constants.BLOCKWIDTH);
-				int y = (int) Math.floor(block.getPosition().y
-						/ Constants.BLOCKHEIGHT);
-
-				if (block != Assoc.get(y).get(x))
-				{
-
-				}
-
-			}
-
-		}
 	}
 	
 	/**
