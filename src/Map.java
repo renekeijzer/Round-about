@@ -87,6 +87,7 @@ public class Map extends GameComponent implements Iterable<GameComponent> {
 		Iterator<ArrayList<GameComponent>> iGameComponent = this.mapList.iterator();
 		return iGameComponent;
 	}
+	
 
 	@Override
 	public void Initialize() {

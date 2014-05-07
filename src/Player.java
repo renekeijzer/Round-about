@@ -107,7 +107,7 @@ public class Player extends MovableGameComponent
 			if (!this.jumping)
 			{
 				this.jumping = true;
-				velocity.y = -7;
+				velocity.y = -14;
 				this.falling = true;
 			}
 		}

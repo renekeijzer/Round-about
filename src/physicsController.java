@@ -65,16 +65,55 @@ public class physicsController extends GameComponent
 					} else
 					{
 						Subject.falling = false;
+						if(Subject instanceof Block)
+						{
+							
+						}
 					}
 
 					isColliding(Subject);
+					updateAssoc(Subject);
 
+					Subject.setOldPosition(Subject.getPosition());
 				}
 			}
 		}
 
 	}
 	
+	private void updateAssoc(MovableGameComponent subject)
+	{
+		if(subject instanceof Block)
+		{
+//			Vector2f oldPosition = subject.getOldPosition();
+//			int oldX = (int) (oldPosition.x / Constants.BLOCKHEIGHT);
+//			int oldY = (int) (oldPosition.y / Constants.BLOCKHEIGHT);
+//			
+//			Vector2f newPosition = subject.getPosition();
+//			int newX = (int) (oldPosition.x / Constants.BLOCKHEIGHT);
+//			int newY = (int) (oldPosition.y / Constants.BLOCKWIDTH);
+//			
+		//	if(newY != oldY){
+			if(subject.falling)
+				GravitationalSwap(subject);
+		//	}
+			
+		}
+	} 
+	
+	
+	
+
+	private void GravitationalSwap(MovableGameComponent subject) {
+		int x = (int) (subject.getPosition().x/Constants.BLOCKWIDTH);
+		int y = (int) (subject.getPosition().y/Constants.BLOCKWIDTH);
+		
+		Block tempBlock = (Block) this.Assoc.get(y+1).get(x);
+		this.setBlock((Block) subject, x, y);
+		this.setBlock(tempBlock, x, y-1);
+	}
+	
+
 	//NOT READY
 	private boolean isColliding(MovableGameComponent subject){
 		if (subject instanceof Player){
@@ -311,6 +350,13 @@ public class physicsController extends GameComponent
 			}
 		}
 		return copy;
+	}
+
+	private void setBlock(Block block, int x, int y){
+		System.out.println("x and y: "+x +"-"+y);
+		ArrayList<GameComponent> temp = this.Assoc.get(y);
+		temp.set(x, block);
+		this.Assoc.set(y, temp);
 	}
 
 }

@@ -66,6 +66,7 @@ public class Block extends MovableGameComponent {
 		this.height = this.rect.getHeight();
 		this.width = this.rect.getWidth();
 		this.position = this.rect.getPosition();
+		this.oldPosition = this.rect.getPosition();
 		velocity = new Vector2f(0,0);
 	}
 

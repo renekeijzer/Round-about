@@ -9,7 +9,7 @@ import Shapes.Rectangle;
 
 public abstract class MovableGameComponent extends GameComponent {
 
-	protected Vector2f position, velocity;
+	protected Vector2f position, velocity, oldPosition;
 	protected Boolean falling = false;
 	protected float gravity = 7f;
 	protected float mass, force;
@@ -44,6 +44,16 @@ public abstract class MovableGameComponent extends GameComponent {
 	public Vector2f getPosition()
 	{
 		return this.position;
+	}
+	
+	public Vector2f getOldPosition()
+	{
+		return this.oldPosition;
+	}
+	
+	public void setOldPosition(Vector2f oldPosition)
+	{
+		this.oldPosition = oldPosition;
 	}
 	
 	public Vector2f getPosition(Courner courner){
