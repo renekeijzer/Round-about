@@ -137,5 +137,9 @@ public class Block extends MovableGameComponent {
 		return Constants.BLOCKWIDTH;
 	}
 	
+	public String toString(){
+		return "type:\t "+this.type.name().substring(0, 2);
+	}
+	
 
 }

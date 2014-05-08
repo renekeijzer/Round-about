@@ -1,5 +1,8 @@
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
 
 import Shapes.Rectangle;
@@ -71,7 +74,17 @@ public class physicsController extends GameComponent
 
 					isColliding(Subject);
 					
-
+					if(Keyboard.isKeyDown(Keyboard.KEY_L)){
+						try {
+							MapDebugger.WriteMaptoLog(this.Assoc);
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (UnsupportedEncodingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 					Subject.setOldPosition(Subject.getPosition());
 				}
 			}
