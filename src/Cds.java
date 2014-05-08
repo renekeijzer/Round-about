@@ -7,7 +7,7 @@ public class Cds extends GameComponent {
 	Components comp = Components.GetInstance();
 	public Cds()
 	{
-		Player p = new Player(new Rectangle(new Vector2f(4512, 100), 32, 64));
+		Player p = new Player(new Rectangle(new Vector2f(100, 100), 32, 64));
 		Map map =  new Map();
 		comp.add(physicsController.getInstance());
 		Camera camera = new Camera(p);

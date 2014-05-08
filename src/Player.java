@@ -56,9 +56,7 @@ public class Player extends MovableGameComponent
 		rect.setX((int) position.x);
 		rect.setY((int) position.y);
 		
-		switch (Keys.getNext())
-		{
-		case Keyboard.KEY_A:
+		if(Keyboard.isKeyDown(Keyboard.KEY_A)){
 			if (!this.colided && this.collidedDirection != Direction.Left)
 			{
 
@@ -76,9 +74,8 @@ public class Player extends MovableGameComponent
 				this.collidedDirection = Direction.None;
 				this.colided = false;
 			}
-			break;
-		case Keyboard.KEY_D:
-			if (!this.colided && this.collidedDirection != Direction.Right)
+		}else if(Keyboard.isKeyDown(Keyboard.KEY_D)){
+		if (!this.colided && this.collidedDirection != Direction.Right)
 			{
 				this.direction = Direction.Right;
 				if (velocity.x < 7)
@@ -93,16 +90,14 @@ public class Player extends MovableGameComponent
 				this.colided = false;
 			}
 
-			break;
-		default:
+		}else{		
 			if (velocity.x < 0)
 				velocity.x += 0.5f;
 			else if (velocity.x > 0)
 				velocity.x -= 0.5f;
-			break;
-		}
+		}		
 		
-		if (Keys.getNext() == Keyboard.KEY_SPACE)
+		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
 		{
 			if (!this.jumping)
 			{
