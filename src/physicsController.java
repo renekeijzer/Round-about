@@ -124,6 +124,9 @@ public class physicsController extends GameComponent
 		int y = (int) (subject.getPosition().y/Constants.BLOCKWIDTH);
 		
 		Block tempBlock = (Block) this.Assoc.get(y+1).get(x);
+		if(tempBlock.getType().name() == "Solid"){
+			tempBlock = new Block(new Rectangle(x*32, (y+1)*32, 32, 32), 0);
+		}
 		this.setBlock((Block) subject, x, y);
 		this.setBlock(tempBlock, x, y-1);
 	}
