@@ -7,7 +7,7 @@ import org.lwjgl.util.vector.Vector2f;
 
 import Shapes.Rectangle;
 import util.Constants;
-import util.Courner;
+import util.Corner;
 import util.PointMath;
 import util.Vector2i;
 import util.XDirection;
@@ -16,7 +16,7 @@ import util.YDirection;
 public class physicsController extends GameComponent
 {
 
-	private ArrayList<ArrayList<GameComponent>> Assoc;
+	private static ArrayList<ArrayList<GameComponent>> Assoc;
 	private static physicsController Instance = null;
 	private Components Components;
 
@@ -86,10 +86,76 @@ public class physicsController extends GameComponent
 						}
 					}
 					Subject.setOldPosition(Subject.getPosition());
+					
+					if(Subject instanceof Player){
+						if(Subject.getPosition().x / Constants.BLOCKWIDTH >= Constants.MAPWIDTH - 2){
+							rotateMapClockwise();
+							
+							System.out.println("as");
+							((Player) component).position.x = 100;
+							((Player) component).position.y = 100;
+							((Player) component).rect.setPosition(new Vector2f(100,100));
+						}
+					}
 				}
 			}
 		}
 
+	}
+	
+	public void rotateMapClockwise(){
+		for (GameComponent component : Components)
+		{
+			createNewAssoc();
+			if(component instanceof Block){
+				int x = (int) ((Block) component).position.x;
+				int y = (int) ((Block) component).position.y;
+				
+				((Block) component).position.y = x;
+				((Block) component).position.x = y;
+				
+				((Block) component).rect.setPosition(new Vector2f(y,x));
+				
+				
+				
+			}
+
+		}
+	}
+	
+	public void createNewAssoc(){
+		Object[][] array = new Object[Assoc.size()][];
+		for (int i = 0; i < Assoc.size(); i++) {
+		    ArrayList<GameComponent> row = Assoc.get(i);
+		    array[i] = row.toArray();
+		}
+		
+		Assoc = new ArrayList<ArrayList<GameComponent>>();
+		
+		for(int i = 0; i < array[0].length; i++){
+			ArrayList<GameComponent> tempRow = new ArrayList<GameComponent>();
+			for(int x = 0; x < array.length; x++){
+				
+				tempRow.add((GameComponent) array[x][i]);
+			}
+			Assoc.add(tempRow);
+		}
+		
+		System.out.println(Assoc.size());
+		
+	}
+	
+	
+	
+	private void rotationSwap(Block block)
+	{
+		int x = (int) (block.getPosition().x/Constants.BLOCKWIDTH);
+		int y = (int) (block.getPosition().y/Constants.BLOCKHEIGHT);
+		
+		Block tempBlock = (Block) Assoc.get(x).get(y);
+		setBlock(block, y, x);
+		setBlock(tempBlock, x, y);
+		
 	}
 	
 	private void updateAssoc(MovableGameComponent subject)
@@ -135,29 +201,29 @@ public class physicsController extends GameComponent
 	//NOT READY
 	private boolean isColliding(MovableGameComponent subject){
 		if (subject instanceof Player){
-			System.out.println("Player Pos: x:" + ((Player)subject).getPosition().x + " y: " + ((Player)subject).getPosition().y);
-			System.out.println("Player NextPos: x:" + ((Player)subject).getNextPosition().x + " y: " + ((Player)subject).getNextPosition().y);
+		//	System.out.println("Player Pos: x:" + ((Player)subject).getPosition().x + " y: " + ((Player)subject).getPosition().y);
+		//	System.out.println("Player NextPos: x:" + ((Player)subject).getNextPosition().x + " y: " + ((Player)subject).getNextPosition().y);
 			Rectangle moveRectangle = subject.getMoveRectangle();
 			ArrayList<Block> blocklist = getNonAirBlocks(moveRectangle);
-			System.out.println(blocklist.size());
+		//	System.out.println(blocklist.size());
 			if(!blocklist.isEmpty()){	//collision while moving!
-				Courner otherPosition;
-				Courner myPosition;
+				Corner otherPosition;
+				Corner myPosition;
 				if(subject.getXDirection() == XDirection.Left){
 					if(subject.getYDirection() == YDirection.Up){
-						otherPosition = Courner.BottomRight;
-						myPosition = Courner.TopLeft;
+						otherPosition = Corner.BottomRight;
+						myPosition = Corner.TopLeft;
 					}else{
-						otherPosition = Courner.TopRight;
-						myPosition = Courner.BottomLeft;
+						otherPosition = Corner.TopRight;
+						myPosition = Corner.BottomLeft;
 					}
 				}else{
 					if(subject.getYDirection() == YDirection.Up){
-						otherPosition = Courner.BottomLeft;
-						myPosition = Courner.TopRight;
+						otherPosition = Corner.BottomLeft;
+						myPosition = Corner.TopRight;
 					}else{
-						otherPosition = Courner.TopLeft;
-						myPosition = Courner.BottomRight;
+						otherPosition = Corner.TopLeft;
+						myPosition = Corner.BottomRight;
 					}
 				}
 				float nearestx = subject.getVelocity().x;
@@ -167,7 +233,7 @@ public class physicsController extends GameComponent
 				float curx = subject.getPosition(myPosition).x;
 				float cury = subject.getPosition(myPosition).y;
 				for(Block b : blocklist){
-					float dif = b.getPosition(Courner.TopLeft).y - subject.getNextPosition(Courner.BottomRight).y;
+					float dif = b.getPosition(Corner.TopLeft).y - subject.getNextPosition(Corner.BottomRight).y;
 					if ((dif < 0.0f && dif > -0.1f) || (dif > 0.0f && dif < 0.1f) || dif == 0.0f) continue;
 					float distx = PointMath.distanceFloat(curx, b.getPosition(otherPosition).x);
 					float disty = PointMath.distanceFloat(cury, b.getPosition(otherPosition).y);
@@ -178,7 +244,7 @@ public class physicsController extends GameComponent
 				if(subject.getVelocity().y < 0) nearesty *= -1;
 				
 				subject.setVelocity(new Vector2f(nearestx, nearesty));
-				System.out.println("Players Limited Pos: x:" + ((Player)subject).getNextPosition().x + " y: " + ((Player)subject).getNextPosition().y);
+		//		System.out.println("Players Limited Pos: x:" + ((Player)subject).getNextPosition().x + " y: " + ((Player)subject).getNextPosition().y);
 				
 				//TODO ?Boolean? i've done all the work
 				return true;
@@ -317,9 +383,9 @@ public class physicsController extends GameComponent
 	 */
 	public ArrayList<Block> getBlocks(Rectangle r){
 		ArrayList<Block> list = new ArrayList<Block>();
-		Vector2i rBlockTopLeft = r.getBlockRasterTopLeftPosition(Courner.TopLeft);
-		Vector2i rBlockBottomRight = r.getBlockRasterTopLeftPosition(Courner.BottomRight);
-		System.out.println("Looking between: "+ rBlockTopLeft + " and " + rBlockBottomRight + "for blocks");
+		Vector2i rBlockTopLeft = r.getBlockRasterTopLeftPosition(Corner.TopLeft);
+		Vector2i rBlockBottomRight = r.getBlockRasterTopLeftPosition(Corner.BottomRight);
+//		System.out.println("Looking between: "+ rBlockTopLeft + " and " + rBlockBottomRight + "for blocks");
 		for (int y = rBlockTopLeft.y; y <= rBlockBottomRight.y; y++){
 			if(y >= Assoc.size()) break;
 			for(int x = rBlockTopLeft.x; x <= rBlockBottomRight.x; x++){
@@ -327,7 +393,7 @@ public class physicsController extends GameComponent
 				GameComponent temp = Assoc.get(y).get(x);
 				if(temp instanceof Block){
 					list.add((Block) temp);
-					System.out.println(((Block)temp).getType().toString() + " x: " + x + " y: " + y);
+				//	System.out.println(((Block)temp).getType().toString() + " x: " + x + " y: " + y);
 				}
 			}
 		}
@@ -348,10 +414,11 @@ public class physicsController extends GameComponent
 	}
 
 	private void setBlock(Block block, int x, int y){
-		System.out.println("x and y: "+x +"-"+y);
+	//	System.out.println("x and y: "+x +"-"+y);
 		ArrayList<GameComponent> temp = this.Assoc.get(y);
 		temp.set(x, block);
 		this.Assoc.set(y, temp);
+		
 	}
 
 }

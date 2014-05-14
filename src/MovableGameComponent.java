@@ -1,6 +1,6 @@
 import org.lwjgl.util.vector.Vector2f;
 
-import util.Courner;
+import util.Corner;
 import util.PointMath;
 import util.XDirection;
 import util.YDirection;
@@ -56,7 +56,7 @@ public abstract class MovableGameComponent extends GameComponent {
 		this.oldPosition = oldPosition;
 	}
 	
-	public Vector2f getPosition(Courner courner){
+	public Vector2f getPosition(Corner courner){
 		return PointMath.getPosition(position, getWidth(), getHeight(), courner);
 	}
 	
@@ -67,7 +67,7 @@ public abstract class MovableGameComponent extends GameComponent {
 		return new Vector2f(this.position.x + this.velocity.x, this.position.y + this.velocity.y);
 	}
 	
-	public Vector2f getNextPosition(Courner courner){
+	public Vector2f getNextPosition(Corner courner){
 		return PointMath.getPosition(getNextPosition(), getWidth(), getHeight(), courner);
 	}
 	

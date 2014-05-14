@@ -50,12 +50,6 @@ public class Player extends MovableGameComponent
 	@Override
 	public void Update()
 	{
-		this.position.x += velocity.x;
-		this.position.y += velocity.y;
-
-		rect.setX((int) position.x);
-		rect.setY((int) position.y);
-		
 		if(Keyboard.isKeyDown(Keyboard.KEY_A)){
 			if (!this.colided && this.collidedDirection != Direction.Left)
 			{
@@ -123,6 +117,11 @@ public class Player extends MovableGameComponent
 			velocity.y = 0;
 			this.jumping = false;
 		}
+		this.position.x += velocity.x;
+		this.position.y += velocity.y;
+
+		rect.setX((int) position.x);
+		rect.setY((int) position.y);
 	}
 
 	@Override

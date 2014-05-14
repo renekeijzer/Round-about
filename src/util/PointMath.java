@@ -27,7 +27,7 @@ public class PointMath {
 		}
 	}
 	
-	public static Vector2f getPosition(Vector2f topleft, float width, float height, Courner courner){
+	public static Vector2f getPosition(Vector2f topleft, float width, float height, Corner courner){
 		switch(courner){
 		case TopLeft:
 			return topleft;

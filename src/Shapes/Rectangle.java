@@ -2,7 +2,7 @@ package Shapes;
 
 import org.lwjgl.util.vector.Vector2f;
 
-import util.Courner;
+import util.Corner;
 import util.PointMath;
 import util.Vector2i;
 
@@ -52,7 +52,7 @@ public class Rectangle {
 	 * Makes the smalst possible Rectangle with both rectangles within
 	 */
 	public Rectangle(Rectangle r1, Rectangle r2){
-		Vector2f points[] = {r1.getPosition(Courner.TopLeft), r1.getPosition(Courner.BottomRight), r2.getPosition(Courner.TopLeft), r2.getPosition(Courner.BottomRight)};
+		Vector2f points[] = {r1.getPosition(Corner.TopLeft), r1.getPosition(Corner.BottomRight), r2.getPosition(Corner.TopLeft), r2.getPosition(Corner.BottomRight)};
 		ArrayList<Float> xlist = new ArrayList<Float>();
 		ArrayList<Float> ylist = new ArrayList<Float>();
 		for(Vector2f point : points){
@@ -68,15 +68,15 @@ public class Rectangle {
 		this.Height = (int) (ylist.get(3) - ylist.get(0));
 	}
 	
-	public Vector2f getPosition(Courner courner){
+	public Vector2f getPosition(Corner courner){
 		return PointMath.getPosition(Position, Width, Height, courner);
 	}
 	
-	public Vector2f getBlockRasterPosition(Courner courner){
+	public Vector2f getBlockRasterPosition(Corner courner){
 		return PointMath.ConvertToBlockRaster(getPosition(courner));
 	}
 	
-	public Vector2i getBlockRasterTopLeftPosition(Courner courner){
+	public Vector2i getBlockRasterTopLeftPosition(Corner courner){
 		return new Vector2i(getBlockRasterPosition(courner));
 	}
 	
@@ -84,9 +84,9 @@ public class Rectangle {
 		return PointMath.getCenterPosition(Position, Width, Height);
 	}
 	
-	public Courner checkCourner(Rectangle r){
-		Courner courners[] = {Courner.TopLeft, Courner.TopRight, Courner.BottomRight, Courner.BottomLeft};
-		for (Courner c : courners){
+	public Corner checkCourner(Rectangle r){
+		Corner courners[] = {Corner.TopLeft, Corner.TopRight, Corner.BottomRight, Corner.BottomLeft};
+		for (Corner c : courners){
 			//convert to int because of may fail when check equals on floats <- on small Rectangles not so accurate
 			Vector2i pos1 = new Vector2i(this.getPosition(c));
 			Vector2i pos2 = new Vector2i(this.getPosition(c));

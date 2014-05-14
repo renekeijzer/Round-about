@@ -1,5 +1,5 @@
 package util;
 
-public enum Courner {
+public enum Corner {
 	TopLeft, TopRight, BottomRight, BottomLeft
 }

@@ -8,27 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class MapDebugger {
-	public MapDebugger()
-	{
-		
-	}
-	
-	public static void writeMapToConsole(ArrayList<ArrayList<Object>> mapList)
-	{
-		int x = 0;
-		int y = 0;
-		for(ArrayList<Object> row : mapList)
-		{
-			for(Object cell : row)
-			{
-				System.out.print("["+x+","+y+"]"+cell + ",");
-				x++;
-			}
-			System.out.println();
-			x=0;
-			y++;
-		}
-	}
+
 	
 	public static void WriteMaptoLog(ArrayList<ArrayList<GameComponent>> assoc) throws FileNotFoundException, UnsupportedEncodingException
 	{
