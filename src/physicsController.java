@@ -142,6 +142,7 @@ public class physicsController extends GameComponent
 		}
 		Constants.MAPHEIGHT = Assoc.size();
 		Constants.MAPWIDTH = Assoc.get(0).size(); 
+
 	}
 	
 	
