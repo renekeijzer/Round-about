@@ -141,7 +141,9 @@ public class physicsController extends GameComponent
 			Assoc.add(tempRow);
 		}
 		
-		System.out.println(Assoc.size());
+		//System.out.println(Assoc.size());
+		Constants.MAPWIDTH= Assoc.get(0).size();
+		Constants.MAPHEIGHT = Assoc.size();
 		
 	}
 	
