@@ -140,23 +140,10 @@ public class physicsController extends GameComponent
 			}
 			Assoc.add(tempRow);
 		}
-		
-		System.out.println(Assoc.size());
-		
+		Constants.MAPHEIGHT = Assoc.size();
+		Constants.MAPWIDTH = Assoc.get(0).size(); 
 	}
 	
-	
-	
-	private void rotationSwap(Block block)
-	{
-		int x = (int) (block.getPosition().x/Constants.BLOCKWIDTH);
-		int y = (int) (block.getPosition().y/Constants.BLOCKHEIGHT);
-		
-		Block tempBlock = (Block) Assoc.get(x).get(y);
-		setBlock(block, y, x);
-		setBlock(tempBlock, x, y);
-		
-	}
 	
 	private void updateAssoc(MovableGameComponent subject)
 	{
@@ -201,11 +188,11 @@ public class physicsController extends GameComponent
 	//NOT READY
 	private boolean isColliding(MovableGameComponent subject){
 		if (subject instanceof Player){
-		//	System.out.println("Player Pos: x:" + ((Player)subject).getPosition().x + " y: " + ((Player)subject).getPosition().y);
-		//	System.out.println("Player NextPos: x:" + ((Player)subject).getNextPosition().x + " y: " + ((Player)subject).getNextPosition().y);
+			System.out.println("Player Pos: x:" + ((Player)subject).getPosition().x + " y: " + ((Player)subject).getPosition().y);
+			System.out.println("Player NextPos: x:" + ((Player)subject).getNextPosition().x + " y: " + ((Player)subject).getNextPosition().y);
 			Rectangle moveRectangle = subject.getMoveRectangle();
 			ArrayList<Block> blocklist = getNonAirBlocks(moveRectangle);
-		//	System.out.println(blocklist.size());
+			System.out.println(blocklist.size());
 			if(!blocklist.isEmpty()){	//collision while moving!
 				Corner otherPosition;
 				Corner myPosition;
@@ -244,7 +231,7 @@ public class physicsController extends GameComponent
 				if(subject.getVelocity().y < 0) nearesty *= -1;
 				
 				subject.setVelocity(new Vector2f(nearestx, nearesty));
-		//		System.out.println("Players Limited Pos: x:" + ((Player)subject).getNextPosition().x + " y: " + ((Player)subject).getNextPosition().y);
+				System.out.println("Players Limited Pos: x:" + ((Player)subject).getNextPosition().x + " y: " + ((Player)subject).getNextPosition().y);
 				
 				//TODO ?Boolean? i've done all the work
 				return true;
@@ -256,72 +243,6 @@ public class physicsController extends GameComponent
 		return false;
 	}
 
-//	private boolean isColliding(MovableGameComponent subject)
-//	{
-//		if (subject instanceof Player)
-//		{
-//			int x = (int) Math
-//					.floor(subject.position.x / Constants.PLAYERWIDTH);
-//			int y = (int) Math
-//					.floor(subject.position.y / Constants.PLAYERWIDTH);
-//
-//			if (subject.direction == Direction.Left)
-//			{
-//				if (x >= 0)
-//				{
-//					Block tmpBlock = (Block) Assoc.get(y).get(x);
-//					System.out.println(tmpBlock.getType().toString() + " x: " + tmpBlock.getPosition().x + " y: " + tmpBlock.getPosition().y);
-//					if (!tmpBlock.getType().isfluid()
-//							&& tmpBlock.getType().getMass() > 0)
-//					{
-//						subject.collidedDirection = Direction.Left;
-//						subject.colided = true;
-//					}
-//					y++;
-//					System.out.println("x: " + x + " y: " + y + " Postition: "
-//							+ subject.position);
-//					tmpBlock = (Block) Assoc.get(y).get(x);
-//
-//					if (!tmpBlock.getType().isfluid()
-//							&& tmpBlock.getType().getMass() > 0)
-//					{
-//						subject.collidedDirection = Direction.Left;
-//						subject.colided = true;
-//					}
-//				}
-//
-//			} else if (subject.direction == Direction.Right)
-//			{
-//				x++;
-//				if (x <= Constants.MAPWIDTH - 1)
-//				{
-//					Block tmpBlock = (Block) Assoc.get(y).get(x);
-//					System.out.println(tmpBlock.getType().toString() + " x: " + tmpBlock.getPosition().x + " y: " + tmpBlock.getPosition().y);
-//					if (!tmpBlock.getType().isfluid()
-//							&& tmpBlock.getType().getMass() > 0)
-//					{
-//						subject.collidedDirection = Direction.Right;
-//						subject.colided = true;
-//					}
-//					y++;
-//					System.out.println("x: " + x + " y: " + y + " Postition: "
-//							+ subject.position);
-//					tmpBlock = (Block) Assoc.get(y).get(x);
-//
-//					if (!tmpBlock.getType().isfluid()
-//							&& tmpBlock.getType().getMass() > 0)
-//					{
-//						subject.collidedDirection = Direction.Right;
-//						subject.colided = true;
-//					}
-//				}
-//
-//			}
-//
-//		}
-//
-//		return false;
-//	}
 
 	public void addAssociationList(ArrayList<ArrayList<GameComponent>> Assoc)
 	{
@@ -385,7 +306,7 @@ public class physicsController extends GameComponent
 		ArrayList<Block> list = new ArrayList<Block>();
 		Vector2i rBlockTopLeft = r.getBlockRasterTopLeftPosition(Corner.TopLeft);
 		Vector2i rBlockBottomRight = r.getBlockRasterTopLeftPosition(Corner.BottomRight);
-//		System.out.println("Looking between: "+ rBlockTopLeft + " and " + rBlockBottomRight + "for blocks");
+		System.out.println("Looking between: "+ rBlockTopLeft + " and " + rBlockBottomRight + "for blocks");
 		for (int y = rBlockTopLeft.y; y <= rBlockBottomRight.y; y++){
 			if(y >= Assoc.size()) break;
 			for(int x = rBlockTopLeft.x; x <= rBlockBottomRight.x; x++){
@@ -393,7 +314,7 @@ public class physicsController extends GameComponent
 				GameComponent temp = Assoc.get(y).get(x);
 				if(temp instanceof Block){
 					list.add((Block) temp);
-				//	System.out.println(((Block)temp).getType().toString() + " x: " + x + " y: " + y);
+					System.out.println(((Block)temp).getType().toString() + " x: " + x + " y: " + y);
 				}
 			}
 		}
@@ -414,7 +335,6 @@ public class physicsController extends GameComponent
 	}
 
 	private void setBlock(Block block, int x, int y){
-	//	System.out.println("x and y: "+x +"-"+y);
 		ArrayList<GameComponent> temp = this.Assoc.get(y);
 		temp.set(x, block);
 		this.Assoc.set(y, temp);
