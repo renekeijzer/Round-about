@@ -85,6 +85,10 @@ public abstract class MovableGameComponent extends GameComponent {
 		return velocity;
 	}
 	
+	public boolean isMoving(){
+		return velocity.x == 0 && velocity.y == 0;
+	}
+	
 	public void setVelocity(Vector2f velocity){
 		this.velocity = velocity;
 	}

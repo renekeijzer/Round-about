@@ -85,19 +85,25 @@ public class Rectangle {
 	public Vector2i getBlockRasterTopLeftPosition(Corner courner){
 		return new Vector2i(getBlockRasterPosition(courner));
 	}
+	public Vector2i getBlockRasterTopLeftPosition(Corner courner, boolean minOne){
+		Vector2f position = getPosition(courner);
+		if(minOne){ position.x--; position.y--;}
+		Vector2f blockRaster = PointMath.ConvertToBlockRaster(position);
+		return new Vector2i((blockRaster.x < 0 ? blockRaster.x*-1 : blockRaster.x), (blockRaster.y < 0 ? blockRaster.y*-1 : blockRaster.y));
+	}
 	
 	public Vector2f getCenterPosition(){
 		return PointMath.getCenterPosition(Position, Width, Height);
 	}
 	
-	public Corner checkCourner(Rectangle r){
-		Corner courners[] = {Corner.TopLeft, Corner.TopRight, Corner.BottomRight, Corner.BottomLeft};
-		for (Corner c : courners){
-			//convert to int because of may fail when check equals on floats <- on small Rectangles not so accurate
-			Vector2i pos1 = new Vector2i(this.getPosition(c));
-			Vector2i pos2 = new Vector2i(this.getPosition(c));
-			if(pos1.equals(pos2)) return c;
-		}
-		return null;
-	}
+//	public Corner checkCourner(Rectangle r){
+//		Corner courners[] = {Corner.TopLeft, Corner.TopRight, Corner.BottomRight, Corner.BottomLeft};
+//		for (Corner c : courners){
+//			//convert to int because of may fail when check equals on floats <- on small Rectangles not so accurate
+//			Vector2i pos1 = new Vector2i(this.getPosition(c));
+//			Vector2i pos2 = new Vector2i(this.getPosition(c));
+//			if(pos1.equals(pos2)) return c;
+//		}
+//		return null;
+//	}
 }

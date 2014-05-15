@@ -286,6 +286,110 @@ public class physicsController extends GameComponent
 		this.setBlock(tempBlock, x, y-1);
 	}
 	
+	private boolean isColliding2(MovableGameComponent subject){
+		if(subject instanceof Player){
+			if(!subject.isMoving()) return false;
+			Rectangle moveRect = subject.getMoveRectangle();
+			ArrayList<Block> blokken = getBlocks(moveRect, false);
+			if(blokken.isEmpty()) return false;
+			for(Block b: getBlocks(subject.getRectangle(), false)){
+				blokken.remove(b);
+			}
+			if(blokken.isEmpty()) return false;
+			
+			ArrayList<Block> xBlokken = new ArrayList<Block>();
+			ArrayList<Block> yBlokken = new ArrayList<Block>();
+			ArrayList<Block> xyBlokken = new ArrayList<Block>();
+			if(subject.getXDirection() != XDirection.None && subject.getYDirection() != YDirection.None){
+				for(Block b : blokken){
+					boolean inX = false;
+					boolean inY = false;
+					if(subject.getXDirection() == XDirection.Right && subject.getPosition(Corner.TopRight).x < b.getPosition(Corner.TopLeft).x) inX = true;
+					else if(subject.getPosition(Corner.TopLeft).x > b.getPosition(Corner.TopRight).x) inX = true;
+					
+					if(subject.getYDirection() == YDirection.Down && subject.getPosition(Corner.BottomLeft).y < b.getPosition(Corner.TopLeft).y) inY = true;
+					else if(subject.getPosition(Corner.TopLeft).y > b.getPosition(Corner.BottomLeft).y) inY = true;
+					
+					if(inX && inY) xyBlokken.add(b);
+					else{
+						if(inX)	xBlokken.add(b);
+						else yBlokken.add(b);
+					}
+				}
+			}
+			if(subject.getYDirection() == YDirection.None || yBlokken.isEmpty()){
+				if(subject.getXDirection() == XDirection.Right){
+					float nearestx = subject.getVelocity().x;
+					float currentx = subject.getPosition(Corner.TopLeft).x;
+					for(Block b : blokken){
+						float distx = PointMath.distanceFloat(currentx, b.getPosition(Corner.TopLeft).x); 
+						if(nearestx > distx) nearestx = distx;
+					}
+					subject.getVelocity().x = nearestx;
+				}else{
+					float nearestx = subject.getVelocity().x * -1;
+					float currentx = subject.getPosition(Corner.TopLeft).x;
+					for(Block b : blokken){
+						float distx = PointMath.distanceFloat(currentx, b.getPosition(Corner.TopRight).x); 
+						if(nearestx > distx) nearestx = distx;
+					}
+					subject.getVelocity().x = nearestx * -1;
+				}
+				return true;
+			}else if(subject.getXDirection() == XDirection.None || xBlokken.isEmpty()){
+				if(subject.getYDirection() == YDirection.Down){
+					float nearesty = subject.getVelocity().y;
+					float currenty = subject.getPosition(Corner.TopLeft).y;
+					for(Block b : blokken){
+						float disty = PointMath.distanceFloat(currenty, b.getPosition(Corner.TopLeft).y); 
+						if(nearesty > disty) nearesty = disty;
+					}
+					subject.getVelocity().y = nearesty;
+				}else{
+					float nearesty = subject.getVelocity().y * -1;
+					float currenty = subject.getPosition(Corner.TopLeft).y;
+					for(Block b : blokken){
+						float disty = PointMath.distanceFloat(currenty, b.getPosition(Corner.BottomLeft).y); 
+						if(nearesty > disty) nearesty = disty;
+					}
+					subject.getVelocity().y = nearesty * -1;
+				}
+			}else{
+				float nearesty = subject.getVelocity().y;
+				float currenty = subject.getPosition(Corner.TopLeft).y;
+				float nearestx = subject.getVelocity().x;
+				float currentx = subject.getPosition(Corner.TopLeft).x;
+				if(subject.getXDirection() == XDirection.Right){
+					for(Block b : xBlokken){
+						float distx = PointMath.distanceFloat(currentx, b.getPosition(Corner.TopLeft).x); 
+						if(nearestx > distx) nearestx = distx;
+					}
+				}else{
+					nearestx *= -1;
+					for(Block b : xBlokken){
+						float distx = PointMath.distanceFloat(currentx, b.getPosition(Corner.TopRight).x); 
+						if(nearestx > distx) nearestx = distx;
+					}
+				}
+				if(subject.getYDirection() == YDirection.Down){
+					for(Block b : yBlokken){
+						float disty = PointMath.distanceFloat(currenty, b.getPosition(Corner.TopLeft).y); 
+						if(nearesty > disty) nearesty = disty;
+					}
+				}else{
+					nearesty *= -1;
+					for(Block b : yBlokken){
+						float disty = PointMath.distanceFloat(currenty, b.getPosition(Corner.BottomLeft).y); 
+						if(nearesty > disty) nearesty = disty;
+					}
+				}
+			}
+			return true;
+			
+			
+		}
+		return false;
+	}
 
 	//NOT READY
 	private boolean isColliding(MovableGameComponent subject){
@@ -293,7 +397,7 @@ public class physicsController extends GameComponent
 			System.out.println("Player Pos: x:" + ((Player)subject).getPosition().x + " y: " + ((Player)subject).getPosition().y);
 			System.out.println("Player NextPos: x:" + ((Player)subject).getNextPosition().x + " y: " + ((Player)subject).getNextPosition().y);
 			Rectangle moveRectangle = subject.getMoveRectangle();
-			ArrayList<Block> blocklist = getNonAirBlocks(moveRectangle);
+			ArrayList<Block> blocklist = getBlocks(moveRectangle, false);
 			System.out.println(blocklist.size());
 			if(!blocklist.isEmpty()){	//collision while moving!
 				Corner otherPosition;
@@ -403,36 +507,34 @@ public class physicsController extends GameComponent
 	/**
 	 * Returns all blocks with are within and on the border of the reactangle
 	 */
-	public ArrayList<Block> getBlocks(Rectangle r){
+	public ArrayList<Block> getBlocks(Rectangle r, boolean getAirblocks){
 		ArrayList<Block> list = new ArrayList<Block>();
-		Vector2i rBlockTopLeft = r.getBlockRasterTopLeftPosition(Corner.TopLeft);
-		Vector2i rBlockBottomRight = r.getBlockRasterTopLeftPosition(Corner.BottomRight);
+		Vector2i rBlockTopLeft = r.getBlockRasterTopLeftPosition(Corner.TopLeft, false);
+		Vector2i rBlockBottomRight = r.getBlockRasterTopLeftPosition(Corner.BottomRight, false);
+		Vector2i rBlockBottomRight2 = r.getBlockRasterTopLeftPosition(Corner.BottomRight, true);
+		if(!rBlockBottomRight.equals(rBlockBottomRight2)) rBlockBottomRight = rBlockBottomRight2;
+		if(rBlockTopLeft.x < 0 || rBlockTopLeft.y < 0) return list;
+		
 		System.out.println("Looking between: "+ rBlockTopLeft + " and " + rBlockBottomRight + "for blocks");
 		for (int y = rBlockTopLeft.y; y <= rBlockBottomRight.y; y++){
+			
 			if(y >= Assoc.size()) break;
+			
 			for(int x = rBlockTopLeft.x; x <= rBlockBottomRight.x; x++){
+				
 				if(x >= Assoc.get(y).size()) break;
+				
 				GameComponent temp = Assoc.get(y).get(x);
 				if(temp instanceof Block){
+					if((!getAirblocks && ((Block)temp).getType() == Type.Air)) continue;
+					
 					list.add((Block) temp);
+					
 					System.out.println(((Block)temp).getType().toString() + " x: " + x + " y: " + y);
 				}
 			}
 		}
 		return list;
-	}
-	/**
-	 * Returns all NonAir blocks with are within and over the border of the reactangle
-	 */
-	public ArrayList<Block> getNonAirBlocks(Rectangle r){
-		ArrayList<Block> list = getBlocks(r);
-		ArrayList<Block> copy = new ArrayList<Block>();
-		for(Block b: list){
-			if(b.getType() != Type.Air){
-				copy.add(b);
-			}
-		}
-		return copy;
 	}
 
 	private void setBlock(Block block, int x, int y){
