@@ -90,12 +90,15 @@ public class physicsController extends GameComponent
 					if(Subject instanceof Player){
 						if(Subject.getPosition().x / Constants.BLOCKWIDTH >= Constants.MAPWIDTH - 2){
 							rotateMapClockwise();
-							
-							System.out.println("as");
-							((Player) component).position.x = 100;
+							if(Map.state.name() == "up"){
+								((Player) component).position.x = -100;
+								((Player) component).position.y = -100;
+								((Player) component).rect.setPosition(new Vector2f(-100,-100));
+									
+							}else{							((Player) component).position.x = 100;
 							((Player) component).position.y = 100;
 							((Player) component).rect.setPosition(new Vector2f(100,100));
-						}
+						}}
 					}
 				}
 			}
@@ -104,43 +107,141 @@ public class physicsController extends GameComponent
 	}
 	
 	public void rotateMapClockwise(){
-		for (GameComponent component : Components)
-		{
-			createNewAssoc();
-			if(component instanceof Block){
-				int x = (int) ((Block) component).position.x;
-				int y = (int) ((Block) component).position.y;
-				
-				((Block) component).position.y = x;
-				((Block) component).position.x = y;
-				
-				((Block) component).rect.setPosition(new Vector2f(y,x));
-				
-				
-				
-			}
-
-		}
-	}
 	
-	public void createNewAssoc(){
+		switch(Map.state.name()){
+		case "up":
+			Map.state = mapState.left;
+			for (GameComponent component : Components)
+			{
+				createNewAssoc(Map.state);
+				if(component instanceof Block){
+					int x = (int) ((Block) component).position.x;
+					int y = (int) ((Block) component).position.y;
+					
+					((Block) component).position.y = x;
+					((Block) component).position.x = y;
+					
+					((Block) component).rect.setPosition(new Vector2f(y,x));
+				}
+			}
+			Map.state.setRendered(true);
+			break;
+		case "down":
+			Map.state = mapState.right;
+			for (GameComponent component : Components)
+			{
+				createNewAssoc(Map.state);
+				if(component instanceof Block){
+					int x = (int) ((Block) component).position.x;
+					int y = (int) ((Block) component).position.y;
+					((Block) component).position.y = x;
+					((Block) component).position.x = y;
+					
+					((Block) component).rect.setPosition(new Vector2f(y,x));
+					
+				}
+
+			}
+			Map.state.setRendered(true);
+
+			break;
+		case "left":
+			Map.state = mapState.down;
+			for (GameComponent component : Components)
+			{
+				createNewAssoc(Map.state);
+				if(component instanceof Block){
+					int x = (int) ((Block) component).position.x*-1;
+					int y = (int) ((Block) component).position.y*-1;
+					
+					((Block) component).position.y = x;
+					((Block) component).position.x = y;
+					
+					((Block) component).rect.setPosition(new Vector2f(y,x));
+				}
+			}
+			Map.state.setRendered(true);
+			break;
+		case "right":
+			Map.state = mapState.up;
+			for (GameComponent component : Components)
+			{
+				createNewAssoc(Map.state);
+				if(component instanceof Block){
+					int x = (int) ((Block) component).position.x*-1;
+					int y = (int) ((Block) component).position.y*-1;
+					System.out.println(x+"-"+y);
+					
+					((Block) component).position.y = x;
+					((Block) component).position.x = y;
+					
+					((Block) component).rect.setPosition(new Vector2f(y,x));
+				}
+			}
+			Map.state.setRendered(true);
+			break;
+		}
+			
+		System.out.println(Map.state.name());
+		
+		
+		}
+	
+	
+	public void createNewAssoc(mapState state){
 		Object[][] array = new Object[Assoc.size()][];
 		for (int i = 0; i < Assoc.size(); i++) {
 		    ArrayList<GameComponent> row = Assoc.get(i);
 		    array[i] = row.toArray();
 		}
-		
+
 		Assoc = new ArrayList<ArrayList<GameComponent>>();
 		
-		for(int i = 0; i < array[0].length; i++){
-			ArrayList<GameComponent> tempRow = new ArrayList<GameComponent>();
-			for(int x = 0; x < array.length; x++){
-				
-				tempRow.add((GameComponent) array[x][i]);
+		switch(state.name()){
+		case "up":
+			for(int i = array[0].length-1; i >= 0; i--){
+				ArrayList<GameComponent> tempRow = new ArrayList<GameComponent>();
+				for(int x = array.length-1; x >= 0; x--){
+					tempRow.add((GameComponent) array[x][i]);
+ 				}
+				Assoc.add(tempRow);
 			}
-			Assoc.add(tempRow);
+			System.out.println(Assoc.size()-1);
+			System.out.println(Assoc.get(0).size()-1);
+			break;
+		case "down":
+			for(int i = array[0].length; i >= 0; i--){
+				ArrayList<GameComponent> tempRow = new ArrayList<GameComponent>();
+				for(int x = array[i].length; x >= 0; i--){
+					tempRow.add((GameComponent) array[x][i]);
+				}
+			}
+			break;
+		case "left":
+			for(int i = 0; i < array[0].length; i++){
+				ArrayList<GameComponent> tempRow = new ArrayList<GameComponent>();
+				for(int x = 0; x < array.length; x++){
+					
+					tempRow.add((GameComponent) array[x][i]);
+				}
+				Assoc.add(tempRow);
+			}
+
+			break;			
+		case "right":
+			for(int i = 0; i < array[0].length; i++){
+				ArrayList<GameComponent> tempRow = new ArrayList<GameComponent>();
+				for(int x = 0; x < array.length; x++){
+					
+					tempRow.add((GameComponent) array[x][i]);
+				}
+				Assoc.add(tempRow);
+			}
+
+			break;
 		}
-		Constants.MAPHEIGHT = Assoc.size();
+		
+				Constants.MAPHEIGHT = Assoc.size();
 		Constants.MAPWIDTH = Assoc.get(0).size(); 
 
 	}
@@ -265,7 +366,6 @@ public class physicsController extends GameComponent
 			{
 				return false;
 			}
-
 			Block tmpBlock = (Block) Assoc.get(y).get(x);
 			if (tmpBlock.getType() == Type.Air && affected)
 			{

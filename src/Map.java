@@ -13,6 +13,7 @@ import Shapes.Rectangle;
 
 public class Map extends GameComponent implements Iterable<GameComponent> {
 
+	public static mapState state = mapState.down;
 	private Components components = Components.GetInstance();
 	private ArrayList<ArrayList<GameComponent>> mapList = new ArrayList<ArrayList<GameComponent>>();
 	public Map() {
@@ -79,6 +80,7 @@ public class Map extends GameComponent implements Iterable<GameComponent> {
             {
             	e.printStackTrace();
             }
+            this.state.setRendered(true);
             physicsController.getInstance().addAssociationList(mapList);
         }
 

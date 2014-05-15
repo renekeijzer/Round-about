@@ -22,7 +22,11 @@ public class Player extends MovableGameComponent
 	@Override
 	public Vector2f getPosition()
 	{
+		if(this.rect.getPosition().x < 0 && this.rect.getPosition().y < 0){
+		return new Vector2f(this.rect.getPosition().x * -1, this.rect.getPosition().y * -1);
+		}else{
 		return this.rect.getPosition();
+		}
 	}
 
 	public Player(Rectangle rectangle)

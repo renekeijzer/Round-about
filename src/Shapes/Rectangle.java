@@ -73,7 +73,13 @@ public class Rectangle {
 	}
 	
 	public Vector2f getBlockRasterPosition(Corner courner){
-		return PointMath.ConvertToBlockRaster(getPosition(courner));
+		return new Vector2f(
+				(PointMath.ConvertToBlockRaster(getPosition(courner)).x < 0 ? 
+						PointMath.ConvertToBlockRaster(getPosition(courner)).x*-1:PointMath.ConvertToBlockRaster(getPosition(courner)).x),
+				(PointMath.ConvertToBlockRaster(getPosition(courner)).y < 0 ? 
+						PointMath.ConvertToBlockRaster(getPosition(courner)).y*-1:PointMath.ConvertToBlockRaster(getPosition(courner)).y)
+										
+				);
 	}
 	
 	public Vector2i getBlockRasterTopLeftPosition(Corner courner){

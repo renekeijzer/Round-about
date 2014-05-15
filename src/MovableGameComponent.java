@@ -43,6 +43,13 @@ public abstract class MovableGameComponent extends GameComponent {
 	 */
 	public Vector2f getPosition()
 	{
+		return new Vector2f(
+				(this.position.x < 0 ? this.position.x *-1:this.position.x),
+				(this.position.y < 0 ? this.position.y *-1:this.position.y)
+				);
+	}
+	
+	public Vector2f getAbsolutePosition(){
 		return this.position;
 	}
 	

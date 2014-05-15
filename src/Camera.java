@@ -18,8 +18,8 @@ public class Camera extends GameComponent {
 	
 	public Camera(MovableGameComponent Focus)
 	{
-		x = Focus.getPosition().x;
-		y = Focus.getPosition().y;
+		x = Focus.getAbsolutePosition().x;
+		y = Focus.getAbsolutePosition().y;
 		this.focusObject = Focus;
 		
 	}
@@ -36,7 +36,7 @@ public class Camera extends GameComponent {
 	
 	private void DoLogic()
 	{
-		Position = new Vector2f(focusObject.getPosition().x, focusObject.getPosition().y);
+		Position = new Vector2f(focusObject.getAbsolutePosition().x, focusObject.getAbsolutePosition().y);
 		x = (float) (Position.x+15 - 800 /2);
 		y = (float) (Position.y+30 - 800 /2);
 		
