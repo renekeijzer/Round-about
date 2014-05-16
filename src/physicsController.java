@@ -206,8 +206,6 @@ public class physicsController extends GameComponent
  				}
 				Assoc.add(tempRow);
 			}
-			System.out.println(Assoc.size()-1);
-			System.out.println(Assoc.get(0).size()-1);
 			break;
 		case "down":
 			for(int i = array[0].length; i >= 0; i--){
