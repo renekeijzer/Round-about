@@ -1,15 +1,29 @@
 package util;
 
 public enum XDirection {
-	None(0), Left(-1), Right(1);
+	None, Left, Right;
 	
-	private final int value;
-	
-	XDirection(int dir){
-		this.value = dir;
+	public static XDirection FromInt(int xVector){
+		if(xVector == 0){
+			return None;
+		}else if(xVector < 0){
+			return Left;
+		}else{
+			return Right;
+		}
 	}
 	
-	int getValue(){
-		return value;
+	public static int ToInt(XDirection value){
+		if(value == None){
+			return 0;
+		}else if(value == Left){
+			return -1;
+		}else{
+			return 1;
+		}
+	}
+	
+	public int GetValue(){
+		return ToInt(this);
 	}
 }
