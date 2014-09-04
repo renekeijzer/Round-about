@@ -21,12 +21,11 @@ public class Block extends MovableGameComponent {
 	private Type type;
 	private int width, height;
 	private Texture texture;
-	
 	public Type getType(){return this.type;}
 	
 	public Block(Rectangle rect, int intType) {
 		super(rect);
-		
+
 		switch(intType)
 		{
 		case 0:
