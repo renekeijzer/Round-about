@@ -19,22 +19,7 @@ public class Cds extends GameComponent {
 	}
 	
 	
-	@Override
-	public void Initialize() {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void LoadContent() {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void Update() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

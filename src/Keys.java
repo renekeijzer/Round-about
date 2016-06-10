@@ -1,6 +1,8 @@
 import org.lwjgl.input.Keyboard;
 
 public class Keys {
+	private Keys(){}
+	
 	public static int getNext()
 	{
 		if(Keyboard.isKeyDown(Keyboard.KEY_A))

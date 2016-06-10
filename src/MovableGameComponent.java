@@ -27,13 +27,13 @@ public abstract class MovableGameComponent extends GameComponent {
 	public abstract void Initialize();
 
 	@Override
-	public abstract void LoadContent();
+	public abstract void loadContent();
 
 	@Override
-	public abstract void Update();
+	public abstract void update();
 	
 	@Override
-	public abstract void Draw();
+	public abstract void draw();
 	
 	public abstract int getHeight();
 	public abstract int getWidth();

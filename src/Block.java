@@ -19,13 +19,23 @@ import Shapes.Rectangle;
 public class Block extends MovableGameComponent {
 
 	private Type type;
-	private int width, height;
+	private int width;
+	private int height;
 	private Texture texture;
-	public Type getType(){return this.type;}
 	
 	public Block(Rectangle rect, int intType) {
 		super(rect);
 
+		assignBlockType(intType);
+		this.Initialize();
+		this.LoadContent();
+		this.height = this.rect.getHeight();
+		this.width = this.rect.getWidth();
+		this.position = this.rect.getPosition();
+		this.oldPosition = this.rect.getPosition();
+		velocity = new Vector2f(0,0);
+	}
+	private void assignBlockType(int intType) {
 		switch(intType)
 		{
 		case 0:
@@ -60,14 +70,10 @@ public class Block extends MovableGameComponent {
 			break;
 		
 		}
-		this.Initialize();
-		this.LoadContent();
-		this.height = this.rect.getHeight();
-		this.width = this.rect.getWidth();
-		this.position = this.rect.getPosition();
-		this.oldPosition = this.rect.getPosition();
-		velocity = new Vector2f(0,0);
 	}
+	public Type getType(){return this.type;}
+	
+	
 
 	@Override
 	public void Initialize() {

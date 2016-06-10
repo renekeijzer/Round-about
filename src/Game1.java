@@ -22,14 +22,14 @@ public class Game1 extends Game {
 	{
 		do{
 			glClear(GL_COLOR_BUFFER_BIT);
-			this.Update();
+			this.update();
 			Display.update();
 		}
 		while(!Display.isCloseRequested());
 	}
 
 	@Override
-	public void Initialize() {
+	public void initialize() {
 		new GameWindow(800, 800);
 		glEnable(GL_BLEND);
 		glViewport(0,0, Window.getWidth(), Window.getHeight());
@@ -42,7 +42,7 @@ public class Game1 extends Game {
 	}
 
 	@Override
-	public void LoadContent() {
+	public void loadContent() {
 		cds = new Cds();
 	}
 

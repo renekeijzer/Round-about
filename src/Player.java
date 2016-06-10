@@ -45,20 +45,20 @@ public class Player extends MovableGameComponent
 	}
 
 	@Override
-	public void LoadContent()
+	public void loadContent()
 	{
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void Update()
+	public void update()
 	{
 		if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-			if (!this.colided && this.collidedDirection != Direction.Left)
+			if (!this.colided && this.collidedDirection != Direction.LEFT)
 			{
 
-				this.direction = Direction.Left;
+				this.direction = Direction.LEFT;
 				if (velocity.x > -7)
 				{
 					velocity.x -= 0.5f;
@@ -67,24 +67,24 @@ public class Player extends MovableGameComponent
 			{
 				velocity.x = 0;
 			}
-			if (this.colided && this.collidedDirection == Direction.Right)
+			if (this.colided && this.collidedDirection == Direction.RIGHT)
 			{
-				this.collidedDirection = Direction.None;
+				this.collidedDirection = Direction.NONE;
 				this.colided = false;
 			}
 		}else if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-		if (!this.colided && this.collidedDirection != Direction.Right)
+		if (!this.colided && this.collidedDirection != Direction.RIGHT)
 			{
-				this.direction = Direction.Right;
+				this.direction = Direction.RIGHT;
 				if (velocity.x < 7)
 					velocity.x += 0.5f;
 			} else
 			{
 				velocity.x = 0;
 			}
-			if (this.colided && this.collidedDirection == Direction.Left)
+			if (this.colided && this.collidedDirection == Direction.LEFT)
 			{
-				this.collidedDirection = Direction.None;
+				this.collidedDirection = Direction.NONE;
 				this.colided = false;
 			}
 
@@ -107,7 +107,7 @@ public class Player extends MovableGameComponent
 
 		if (velocity.x == 0)
 		{
-			this.direction = Direction.None;
+			this.direction = Direction.NONE;
 		}
 
 		if (this.falling)
@@ -129,7 +129,7 @@ public class Player extends MovableGameComponent
 	}
 
 	@Override
-	public void Draw()
+	public void draw()
 	{
 		Color.white.bind();
 		glBegin(GL_QUADS);

@@ -3,35 +3,35 @@ import java.util.ArrayList;
 public abstract class Game {
 
 	private Components components;
-	private ArrayList<GameComponent> RemoveList;
+	private ArrayList<GameComponent> removeList;
 
 	public Game() {
-		Initialize();
-		LoadContent();
-		RemoveList = new ArrayList<GameComponent>();
+		initialize();
+		loadContent();
+		removeList = new ArrayList<>();
 	}
 
-	public abstract void Initialize();
+	public abstract void initialize();
 
-	public abstract void LoadContent();
+	public abstract void loadContent();
 
-	public void Update() {
+	public void update() {
 		if (components == null) {
 			this.components = Components.GetInstance();
 		}
 		if (components.Size() != 0) {
 			for (GameComponent gc : components) {
 				if (gc.isRemove()) {
-					RemoveList.add(gc);
+					removeList.add(gc);
 				} else {
-					gc.Update();
-					gc.Draw();
+					gc.update();
+					gc.draw();
 				}
 			}
 		}
-		if(RemoveList.size() > 0)
+		if(!removeList.isEmpty())
 		{
-			components.remove(RemoveList);
+			components.remove(removeList);
 		}
 	}
 }

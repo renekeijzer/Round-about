@@ -1,26 +1,24 @@
 
 public abstract class GameComponent {
 	
+	private boolean remove;
+	
 	public GameComponent()
 	{
-		//Initialize();
-		//LoadContent();
 	}
 	
-	private boolean Remove;
-	
-	public abstract void Initialize();
-	public abstract void LoadContent();
-	public abstract void Update();
-	public void Draw()
+	public abstract void initialize();
+	public abstract void loadContent();
+	public abstract void update();
+	public void draw()
 	{
 		
 	}
 	public boolean isRemove() {
-		return Remove;
+		return remove;
 	}
-	public void setRemove(boolean remove) {
-		Remove = remove;
+	public void setRemove(boolean rem) {
+		remove = rem;
 	}
 	
 }

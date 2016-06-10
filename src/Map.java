@@ -15,18 +15,17 @@ public class Map extends GameComponent implements Iterable<GameComponent> {
 
 	public static mapState state = mapState.down;
 	private Components components = Components.GetInstance();
-	private ArrayList<ArrayList<GameComponent>> mapList = new ArrayList<ArrayList<GameComponent>>();
+	private ArrayList<ArrayList<GameComponent>> mapList = new ArrayList<>();
 	public Map() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void GenerateLevel(int level)
     {
     		Boolean renderMap = false;
-    		String[] blocks = null;
-            int Tempx = 0;
-            int Tempy = 0;
-            ArrayList<GameComponent> temprow = new ArrayList<GameComponent>();
+    
+            int tempx = 0;
+            int tempy = 0;
+            ArrayList<GameComponent> temprow = new ArrayList<>();
             BufferedReader reader = null;
             try {
                     reader = new BufferedReader(new FileReader("levels/level" + level + ".txt"));
@@ -39,30 +38,22 @@ public class Map extends GameComponent implements Iterable<GameComponent> {
                         if(renderMap)
                         {
                         	blocks = line.split(",");
-                        	for(String block : blocks)
-                        	{
-                        		Block tmpBlock = new Block(new Rectangle(Tempx, Tempy, 32, 32), Integer.parseInt(block)); 
-                        		components.add(tmpBlock);
-                        		temprow.add(tmpBlock);
-                        		Tempx += 32;	
-                        	}
+                        	assignInMap(tempx, tempy, temprow);
                         	
-                        	Tempx = 0;
-                        	Tempy += 32;
+                        	tempx = 0;
+                        	tempy += 32;
                         	mapList.add(temprow);
-                        	temprow=new ArrayList<GameComponent>();
+                        	temprow=new ArrayList<>();
                         }   
                     	if(line.contains("width"))
                     	{
-                    		String parts[] = line.split("=");
-                    		System.out.println("Map width initialized at: "+parts[1]);
+                    		String[] parts = line.split("=");
                     		Constants.MAPWIDTH = Integer.parseInt(parts[1]);
                     	}
                     	if(line.contains("height"))
                     	{
                     		
-                    		String parts[] = line.split("=");
-                    		System.out.println("Map height initialized at: " + parts[1]);
+                    		String[] parts = line.split("=");
                     		Constants.MAPHEIGHT = Integer.parseInt(parts[1]);
                     	}
                         
@@ -74,7 +65,6 @@ public class Map extends GameComponent implements Iterable<GameComponent> {
                            
                            
                     }
-                    renderMap = false;
             }
             catch(IOException e)
             {
@@ -84,35 +74,23 @@ public class Map extends GameComponent implements Iterable<GameComponent> {
             physicsController.getInstance().addAssociationList(mapList);
         }
 
+	private int assignInMap(int tempx, int tempy, ArrayList<GameComponent> temprow) {
+		for(String block : blocks)
+		{
+			Block tmpBlock = new Block(new Rectangle(tempx, tempy, 32, 32), Integer.parseInt(block)); 
+			components.add(tmpBlock);
+			temprow.add(tmpBlock);
+			tempx += 32;	
+		}
+		return tempx;
+	}
+
 	@Override
 	public Iterator iterator() {
-		Iterator<ArrayList<GameComponent>> iGameComponent = this.mapList.iterator();
-		return iGameComponent;
+		return this.mapList.iterator();
 	}
 	
 
-	@Override
-	public void Initialize() {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void LoadContent() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void Update() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void Draw() {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

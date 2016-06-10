@@ -43,14 +43,14 @@ public class physicsController extends GameComponent
 	}
 
 	@Override
-	public void LoadContent()
+	public void loadContent()
 	{
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void Update()
+	public void update()
 	{
 		if (Assoc.size() > 0)
 		{
@@ -87,23 +87,27 @@ public class physicsController extends GameComponent
 					}
 					Subject.setOldPosition(Subject.getPosition());
 					
-					if(Subject instanceof Player){
-						if(Subject.getPosition().x / Constants.BLOCKWIDTH >= Constants.MAPWIDTH - 2){
-							rotateMapClockwise();
-							if(Map.state.name() == "up"){
-								((Player) component).position.x = -100;
-								((Player) component).position.y = -100;
-								((Player) component).rect.setPosition(new Vector2f(-100,-100));
-									
-							}else{							((Player) component).position.x = 100;
-							((Player) component).position.y = 100;
-							((Player) component).rect.setPosition(new Vector2f(100,100));
-						}}
-					}
+					rotateMap(component, Subject);
 				}
 			}
 		}
 
+	}
+
+	private void rotateMap(GameComponent component, MovableGameComponent Subject) {
+		if(Subject instanceof Player){
+			if(Subject.getPosition().x / Constants.BLOCKWIDTH >= Constants.MAPWIDTH - 2){
+				rotateMapClockwise();
+				if(Map.state.name() == "up"){
+					((Player) component).position.x = -100;
+					((Player) component).position.y = -100;
+					((Player) component).rect.setPosition(new Vector2f(-100,-100));
+						
+				}else{							((Player) component).position.x = 100;
+				((Player) component).position.y = 100;
+				((Player) component).rect.setPosition(new Vector2f(100,100));
+			}}
+		}
 	}
 	
 	public void rotateMapClockwise(){

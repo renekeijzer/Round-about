@@ -1,5 +1,5 @@
 
 public enum Direction
 {
-	None,Left, Right, Down, Up
+	NONE,LEFT, RIGHT, DOWN, UP
 }

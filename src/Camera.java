@@ -13,20 +13,24 @@ import org.lwjgl.util.vector.Vector2f;
 public class Camera extends GameComponent {
 	
 	private MovableGameComponent focusObject;
-	private float x, y, xb, yb, Velocity;
-	private Vector2f Position;
+	private float x;
+	private float y;
+	private float xb;
+	private float yb;
 	
-	public Camera(MovableGameComponent Focus)
+	private Vector2f position;
+	
+	public Camera(MovableGameComponent focus)
 	{
-		x = Focus.getAbsolutePosition().x;
-		y = Focus.getAbsolutePosition().y;
-		this.focusObject = Focus;
+		x = focus.getAbsolutePosition().x;
+		y = focus.getAbsolutePosition().y;
+		this.focusObject = focus;
 		
 	}
 	
 	@Override
-	public void Update() {
-		DoLogic();
+	public void update() {
+		doLogic();
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glOrtho(x, xb, yb, y, 1, -1);
@@ -34,30 +38,17 @@ public class Camera extends GameComponent {
 		
 	}
 	
-	private void DoLogic()
+	private void doLogic()
 	{
-		Position = new Vector2f(focusObject.getAbsolutePosition().x, focusObject.getAbsolutePosition().y);
-		x = (float) (Position.x+15 - 800 /2);
-		y = (float) (Position.y+30 - 800 /2);
+		position = new Vector2f(focusObject.getAbsolutePosition().x, focusObject.getAbsolutePosition().y);
+		x = (float) (position.x+15 - 800 /2);
+		y = (float) (position.y+30 - 800 /2);
 		
-		xb = (float) (Position.x+15 + 800 / 2);
-		yb = (float) (Position.y+30 + 800 / 2);
+		xb = (float) (position.x+15 + 800 / 2);
+		yb = (float) (position.y+30 + 800 / 2);
 
 		
 	}
 
-	@Override
-	public void Initialize()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void LoadContent()
-	{
-		// TODO Auto-generated method stub
-		
-	}
 
 }

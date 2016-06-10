@@ -3,57 +3,57 @@ import java.util.Iterator;
 
 
 public class Components implements Iterable<GameComponent>{
-	private static Components Instance;
-	private ArrayList<GameComponent> ComponentList;
+	private static Components instance;
+	private ArrayList<GameComponent> componentList;
 	private Components()
 	{
-		ComponentList = new ArrayList<GameComponent>();
+		componentList = new ArrayList<>();
 	}
 	
-	public static Components GetInstance()
+	public static Components getInstance()
 	{
-		if(Instance == null)
+		if(instance == null)
 		{
-			Instance = new Components();
+			instance = new Components();
 		}
-		return Instance;
+		return instance;
 	}
 	
 	public void add(GameComponent gc)
 	{
-		if(ComponentList != null)
+		if(componentList != null)
 		{
-			ComponentList.add(gc);
+			componentList.add(gc);
 		}
 	}
 	
 	public void remove(GameComponent gc)
 	{
-		if(ComponentList != null)
+		if(componentList != null)
 		{
-			ComponentList.remove(gc);
+			componentList.remove(gc);
 		}
 	}
 	
-	public int Size()
+	public int size()
 	{
-		if(ComponentList != null)
+		if(componentList != null)
 		{
-			return ComponentList.size();
+			return componentList.size();
 		}
 		return 0;
 	}
 	
 	@Override
 	public Iterator<GameComponent> iterator() {
-		Iterator<GameComponent> iGameComponent = this.ComponentList.iterator();
-		return iGameComponent;
+		return this.componentList.iterator();
+		
 	}
 
-	public void remove(ArrayList<GameComponent> removeList) {
+	public void remove(List<GameComponent> removeList) {
 		for(GameComponent gc: removeList)
 		{
-			ComponentList.remove(gc);
+			componentList.remove(gc);
 		}
 	}
 	
